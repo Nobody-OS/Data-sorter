@@ -44,7 +44,8 @@ attention:
     Images, Documents, Videos, Audio, 3D, Zip, ISO, exe, Txt, Coding
     If you have files with the same name as the ones being sorted, they will be skipped
 
-    Supported file types:
+Supported file types:
+
     Images: .jpg, .png, .gif, .webp, .bmp, .svg, .tiff, .ico
     Documents: .doc, .docx, .pdf
     Videos: .mp4, .avi, .mkv
