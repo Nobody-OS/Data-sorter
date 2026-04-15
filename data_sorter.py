@@ -10,14 +10,13 @@
 # ║            [Data Sorter - Clean the mess up!]             ║
 # ║                                                           ║
 # ╚═══════════════════════════════════════════════════════════╝
-#
-# Nobody's Data Sorter (NobodyDS)
+# Nobody's Data Sorter (NobodyDS) 
 # A comprehensive utility tool to organize and sort files in a specified directory or drive based on their types.
+
 
 import os
 import shutil
 import time
-import keyboard
 
 
 class Colors:
@@ -50,6 +49,13 @@ def cleaner():
 
     def help():
         print(f"""{Colors.RESET}
+Here is a list of commands you can use:
+        1. open - opens the directory you want to sort
+        2. check - checks the directory path you entered
+        3. sort - sorts the files into folders
+        4. clear - clears the terminal
+        5. help - command explanation and help
+
 usage:
 
     open    before using 'sort', you need to use 'open' to specify the directory you want to sort
@@ -58,37 +64,58 @@ usage:
     clear   clears the terminal and shows the menu again
     help    shows this help message
 
-keyboard shortcuts:
+attention:
 
-    open    ctrl + o
-    check   ctrl + g
-    sort    ctrl + s
-    clear   ctrl + l
-    help    ctrl + h
+    Follow the commands chronologically!
+    check does create new folders or use your folder if you have them:
+    Images, Documents, Videos, Audio, 3D, Zip, ISO, exe, Txt, Coding
+    If you have files with the same name as the ones being sorted, they will be skipped
 
+Supported file types and their corresponding folders:
 
+    Images:    .jpg, .png, .gif, .webp, .bmp, .svg, .tiff, .ico
+    Documents: .doc, .docx, .pdf
+    Videos:    .mp4, .avi, .mkv
+    Audio:     .mp3, .wav, .flac
+    3D:        .obj, .fbx, .blend, .stl, .stp, .igs, .3mf
+    Zip:       .zip, .rar, .7z, .gz, .tar, .bz2
+    ISO:       .iso, .img
+    exe:       .exe, .msi, .bat, .sh
+    Txt:       .txt, .csv, .log, .md, .json, .xml
+    Coding:    .py, .js, .html, .css, .java, .cpp, .c, .cs, .rb, .php, .go, .rs, .swift, .kt, .ts, .tsx, .jsx, .jar, .dll, .so, .dylib
+
+    Found a bug? Have a suggestion? Want to contribute? Visit the GitHub repository:
+    https://github.com/Nobody-OS/Data-sorter/
 """)
 
     def menu():
         print_banner()
         print(f"""{Colors.CYAN}Here is a list of commands you can use:
-        1. open - opens the directory you want to sort
-        2. check - checks the directory path you entered
-        3. sort - sorts the files into folders
-        4. clear - clears the terminal
-        5. help - command explanation and help{Colors.RESET}""")
+            1. open - opens the directory you want to sort
+            2. check - checks the directory path you entered
+            3. sort - sorts the files into folders
+            4. clear - clears the terminal
+            5. help - command explanation and help{Colors.RESET}""")
+
     directory = None
+    sorting = False
+
     menu()
-    helpmenu = menu() + help()
+
     while True:
         try:
-            command = input(f"\n{Colors.BLUE}Enter a command:{Colors.RESET}{Colors.BLUE} {Colors.RESET}").lower()
+            command = input(f"\n{Colors.BLUE}Enter a command:{Colors.RESET} ").lower()
         except KeyboardInterrupt:
-            print(f"""\n{Colors.RED}CTRL + C pressed. Interrupted by user{Colors.RESET}""")
-            time.sleep(1)
-            break
+            if sorting:
+                print(f"\n{Colors.YELLOW}Sorting in progress. Please wait...{Colors.RESET}")
+                time.sleep(1)
+                continue
+            else:
+                print(f"\n{Colors.RED}CTRL + C pressed. Interrupted by user{Colors.RESET}")
+                time.sleep(1)
+                break
 
-        if command == "open" or keyboard.is_pressed('ctrl+o'):
+        if command == "open":
             directory = input("Enter the directory you want to sort: ")
 
             if os.path.exists(directory):
@@ -97,15 +124,14 @@ keyboard shortcuts:
                 print(f"Directory {Colors.RED}{directory}{Colors.RESET} does not exist")
                 directory = None
 
-        elif command == "clear" or keyboard.is_pressed('ctrl+l'):
+        elif command == "clear":
             clear()
             menu()
 
-        elif command == "help" or "--help" or "--h" or keyboard.is_pressed('ctrl+h'):
-            print(helpmenu)
-            print()
+        elif command == "help":
+            help()
 
-        elif command == "check" or keyboard.is_pressed('ctrl+g'):
+        elif command == "check":
             if directory is None:
                 print("You need to use 'open' first")
             elif os.path.exists(directory):
@@ -114,11 +140,14 @@ keyboard shortcuts:
             else:
                 print(f"Directory {Colors.RED}{directory}{Colors.RESET} path is invalid")
 
-        elif command == "sort" or keyboard.is_pressed('ctrl+s'):
+        elif command == "sort":
             moved = 0
+
             if directory is None:
                 print("You need to use 'open' first")
                 continue
+
+            sorting = True
 
             FOLDERS = ["Images", "Documents", "Videos", "Audio", "3D", "Zip", "ISO", "exe", "Txt", "Coding"]
 
@@ -130,6 +159,7 @@ keyboard shortcuts:
             for filename in os.listdir(directory):
                 if filename in FOLDERS:
                     continue
+
                 old_path = os.path.join(directory, filename)
 
                 if not os.path.isfile(old_path):
@@ -179,10 +209,13 @@ keyboard shortcuts:
 
             print("Sorting complete")
             print(f"Total files moved: {moved}")
-            time.sleep(2)
 
+            sorting = False
+
+            time.sleep(2)
             clear()
             menu()
+
         else:
             print(f"{Colors.RED}Invalid command{Colors.RESET}")
 
