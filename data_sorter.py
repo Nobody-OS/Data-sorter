@@ -17,10 +17,10 @@
 import os
 import shutil
 import time
+import keyboard
 
 
 class Colors:
-    """ANSI color codes for terminal output"""
     RED = '\033[91m'
     GREEN = '\033[92m'
     YELLOW = '\033[93m'
@@ -48,14 +48,38 @@ def cleaner():
     ╚════════════════════════════════════════════╝
     {Colors.RESET}""")
 
+    def help():
+        print(f"""{Colors.RESET}
+usage:
+
+    open    before using 'sort', you need to use 'open' to specify the directory you want to sort
+    check   checks the directory path you entered, make sure it's correct before sorting
+    sort    sorts the files in the directory into folders based on their types
+    clear   clears the terminal and shows the menu again
+    help    shows this help message
+
+keyboard shortcuts:
+
+    open    ctrl + o
+    check   ctrl + g
+    sort    ctrl + s
+    clear   ctrl + l
+    help    ctrl + h
+
+
+""")
+
     def menu():
         print_banner()
-        print(f"{Colors.CYAN}Here is a list of commands you can use:{Colors.RESET}")
-        print(f"{Colors.CYAN}1. open - Opens the directory you want to sort{Colors.RESET}")
-        print(f"{Colors.CYAN}2. check - Checks the directory path you entered{Colors.RESET}")
-        print(f"{Colors.CYAN}3. sort - Sorts the files into folders{Colors.RESET}")
+        print(f"""{Colors.CYAN}Here is a list of commands you can use:
+        1. open - opens the directory you want to sort
+        2. check - checks the directory path you entered
+        3. sort - sorts the files into folders
+        4. clear - clears the terminal
+        5. help - command explanation and help{Colors.RESET}""")
     directory = None
     menu()
+    helpmenu = menu() + help()
     while True:
         try:
             command = input(f"\n{Colors.BLUE}Enter a command:{Colors.RESET}{Colors.BLUE} {Colors.RESET}").lower()
@@ -64,7 +88,7 @@ def cleaner():
             time.sleep(1)
             break
 
-        if command == "open":
+        if command == "open" or keyboard.is_pressed('ctrl+o'):
             directory = input("Enter the directory you want to sort: ")
 
             if os.path.exists(directory):
@@ -73,11 +97,15 @@ def cleaner():
                 print(f"Directory {Colors.RED}{directory}{Colors.RESET} does not exist")
                 directory = None
 
-        elif command == "clear":
+        elif command == "clear" or keyboard.is_pressed('ctrl+l'):
             clear()
             menu()
 
-        elif command == "check":
+        elif command == "help" or "--help" or "--h" or keyboard.is_pressed('ctrl+h'):
+            print(helpmenu)
+            print()
+
+        elif command == "check" or keyboard.is_pressed('ctrl+g'):
             if directory is None:
                 print("You need to use 'open' first")
             elif os.path.exists(directory):
@@ -86,7 +114,7 @@ def cleaner():
             else:
                 print(f"Directory {Colors.RED}{directory}{Colors.RESET} path is invalid")
 
-        elif command == "sort":
+        elif command == "sort" or keyboard.is_pressed('ctrl+s'):
             moved = 0
             if directory is None:
                 print("You need to use 'open' first")
