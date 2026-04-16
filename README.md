@@ -34,6 +34,7 @@ usage:
     open    before using 'sort', you need to use 'open' to specify the directory you want to sort
     check   checks the directory path you entered, make sure it's correct before sorting
     sort    sorts the files in the directory into folders based on their types
+            date sorting option is available, which allows you to sort files into subfolders based on their modification date
     clear   clears the terminal and shows the menu again
     help    shows this help message
 
