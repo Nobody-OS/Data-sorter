@@ -19,10 +19,10 @@ pip install -r requirements.txt
 py start data_sorter.py
 ```
 
-## List of commands
+## Command help
 
 
-Here is a list of commands you can use:
+here is a list of commands you can use:
 ```
         1. open - opens the directory you want to sort
         2. check - checks the directory path you entered
