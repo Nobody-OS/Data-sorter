@@ -10,7 +10,7 @@
 # ║            [Data Sorter - Clean the mess up!]             ║
 # ║                                                           ║
 # ╚═══════════════════════════════════════════════════════════╝
-# Nobody's Data Sorter (NobodyDS) 
+# Nobody's Data Sorter (NobodyDS)
 # A comprehensive utility tool to organize and sort files in a specified directory or drive based on their types.
 
 
@@ -49,30 +49,28 @@ def cleaner():
 
     def help():
         print(f"""{Colors.RESET}
-Here is a list of commands you can use:
+{Colors.GREEN}command list:{Colors.RESET}
         1. open - opens the directory you want to sort
         2. check - checks the directory path you entered
         3. sort - sorts the files into folders
         4. clear - clears the terminal
         5. help - command explanation and help
 
-usage:
-
+{Colors.GREEN}usage:{Colors.RESET}
     open    before using 'sort', you need to use 'open' to specify the directory you want to sort
     check   checks the directory path you entered, make sure it's correct before sorting
     sort    sorts the files in the directory into folders based on their types
+            date sorting option is available, which allows you to sort files into subfolders based on their modification date
     clear   clears the terminal and shows the menu again
     help    shows this help message
 
-attention:
-
+{Colors.RED}attention:{Colors.RESET}
     Follow the commands chronologically!
     check does create new folders or use your folder if you have them:
     Images, Documents, Videos, Audio, 3D, Zip, ISO, exe, Txt, Coding
     If you have files with the same name as the ones being sorted, they will be skipped
 
-Supported file types and their corresponding folders:
-
+{Colors.CYAN}Supported file types and their corresponding folders:{Colors.RESET}
     Images:    .jpg, .png, .gif, .webp, .bmp, .svg, .tiff, .ico
     Documents: .doc, .docx, .pdf
     Videos:    .mp4, .avi, .mkv
@@ -84,7 +82,7 @@ Supported file types and their corresponding folders:
     Txt:       .txt, .csv, .log, .md, .json, .xml
     Coding:    .py, .js, .html, .css, .java, .cpp, .c, .cs, .rb, .php, .go, .rs, .swift, .kt, .ts, .tsx, .jsx, .jar, .dll, .so, .dylib
 
-    Found a bug? Have a suggestion? Want to contribute? Visit the GitHub repository:
+    {Colors.YELLOW}Found a bug? Have a suggestion? Want to contribute? Visit the GitHub repository:{Colors.RESET}
     https://github.com/Nobody-OS/Data-sorter/
 """)
 
@@ -147,12 +145,13 @@ Supported file types and their corresponding folders:
 
             sorting = True
 
-            # 🔥 NEU: optional Datum
             use_date = input("Do you want date sorting? (y/n): ").lower()
             date_folder = None
 
             if use_date == "y":
-                chosen_folder = input("Which folder should be used (Images, Documents...): ").strip()
+                clear()
+                print(f"{Colors.CYAN}Available folders: Images, Documents, Videos, Audio, 3D, Zip, ISO, exe, Txt, Coding{Colors.RESET}")
+                chosen_folder = input("Which folder should be used: ").strip()
                 date_input = input("Dates (DD.MM.YYYY): ").strip()
                 date_folder = date_input.replace(".", "-")
             else:
