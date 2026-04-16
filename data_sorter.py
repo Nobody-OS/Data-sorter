@@ -108,11 +108,9 @@ Supported file types and their corresponding folders:
         except KeyboardInterrupt:
             if sorting:
                 print(f"\n{Colors.YELLOW}Sorting in progress. Please wait...{Colors.RESET}")
-                time.sleep(1)
                 continue
             else:
                 print(f"\n{Colors.RED}CTRL + C pressed. Interrupted by user{Colors.RESET}")
-                time.sleep(1)
                 break
 
         if command == "open":
@@ -149,12 +147,29 @@ Supported file types and their corresponding folders:
 
             sorting = True
 
+            # 🔥 NEU: optional Datum
+            use_date = input("Do you want date sorting? (y/n): ").lower()
+            date_folder = None
+
+            if use_date == "y":
+                chosen_folder = input("Which folder should be used (Images, Documents...): ").strip()
+                date_input = input("Dates (DD.MM.YYYY): ").strip()
+                date_folder = date_input.replace(".", "-")
+            else:
+                chosen_folder = None
+
             FOLDERS = ["Images", "Documents", "Videos", "Audio", "3D", "Zip", "ISO", "exe", "Txt", "Coding"]
 
             for folder in FOLDERS:
                 path = os.path.join(directory, folder)
                 if not os.path.exists(path):
                     os.makedirs(path)
+
+            def make_path(folder):
+                if date_folder:
+                    return os.path.join(directory, folder, date_folder, filename)
+                else:
+                    return os.path.join(directory, folder, filename)
 
             for filename in os.listdir(directory):
                 if filename in FOLDERS:
@@ -168,34 +183,84 @@ Supported file types and their corresponding folders:
                 name = filename.lower()
 
                 if name.endswith((".jpg", ".png", ".gif", ".webp", ".bmp", ".svg", ".tiff", ".ico")):
-                    new_path = os.path.join(directory, "Images", filename)
+                    if chosen_folder == "Images":
+                        new_path = make_path("Images")
+                    elif chosen_folder is None:
+                        new_path = os.path.join(directory, "Images", filename)
+                    else:
+                        continue
 
                 elif name.endswith((".doc", ".docx", ".pdf")):
-                    new_path = os.path.join(directory, "Documents", filename)
+                    if chosen_folder == "Documents":
+                        new_path = make_path("Documents")
+                    elif chosen_folder is None:
+                        new_path = os.path.join(directory, "Documents", filename)
+                    else:
+                        continue
 
                 elif name.endswith((".mp4", ".avi", ".mkv")):
-                    new_path = os.path.join(directory, "Videos", filename)
+                    if chosen_folder == "Videos":
+                        new_path = make_path("Videos")
+                    elif chosen_folder is None:
+                        new_path = os.path.join(directory, "Videos", filename)
+                    else:
+                        continue
 
                 elif name.endswith((".mp3", ".wav", ".flac")):
-                    new_path = os.path.join(directory, "Audio", filename)
+                    if chosen_folder == "Audio":
+                        new_path = make_path("Audio")
+                    elif chosen_folder is None:
+                        new_path = os.path.join(directory, "Audio", filename)
+                    else:
+                        continue
 
                 elif name.endswith((".obj", ".fbx", ".blend", ".stl", ".stp", ".igs", ".3mf")):
-                    new_path = os.path.join(directory, "3D", filename)
+                    if chosen_folder == "3D":
+                        new_path = make_path("3D")
+                    elif chosen_folder is None:
+                        new_path = os.path.join(directory, "3D", filename)
+                    else:
+                        continue
 
                 elif name.endswith((".zip", ".rar", ".7z", ".gz", ".tar", ".bz2")):
-                    new_path = os.path.join(directory, "Zip", filename)
+                    if chosen_folder == "Zip":
+                        new_path = make_path("Zip")
+                    elif chosen_folder is None:
+                        new_path = os.path.join(directory, "Zip", filename)
+                    else:
+                        continue
 
                 elif name.endswith((".iso", ".img")):
-                    new_path = os.path.join(directory, "ISO", filename)
+                    if chosen_folder == "ISO":
+                        new_path = make_path("ISO")
+                    elif chosen_folder is None:
+                        new_path = os.path.join(directory, "ISO", filename)
+                    else:
+                        continue
 
                 elif name.endswith((".exe", ".msi", ".bat", ".sh")):
-                    new_path = os.path.join(directory, "exe", filename)
+                    if chosen_folder == "exe":
+                        new_path = make_path("exe")
+                    elif chosen_folder is None:
+                        new_path = os.path.join(directory, "exe", filename)
+                    else:
+                        continue
 
                 elif name.endswith((".txt", ".csv", ".log", ".md", ".json", ".xml")):
-                    new_path = os.path.join(directory, "Txt", filename)
+                    if chosen_folder == "Txt":
+                        new_path = make_path("Txt")
+                    elif chosen_folder is None:
+                        new_path = os.path.join(directory, "Txt", filename)
+                    else:
+                        continue
 
                 elif name.endswith((".py", ".js", ".html", ".css", ".java", ".cpp", ".c", ".cs", ".rb", ".php", ".go", ".rs", ".swift", ".kt", ".ts", ".tsx", ".jsx", ".jar", ".dll", ".so", ".dylib")):
-                    new_path = os.path.join(directory, "Coding", filename)
+                    if chosen_folder == "Coding":
+                        new_path = make_path("Coding")
+                    elif chosen_folder is None:
+                        new_path = os.path.join(directory, "Coding", filename)
+                    else:
+                        continue
 
                 else:
                     continue
@@ -203,6 +268,7 @@ Supported file types and their corresponding folders:
                 if os.path.exists(new_path):
                     print(f"Skipped (already exists): {filename}")
                 else:
+                    os.makedirs(os.path.dirname(new_path), exist_ok=True)
                     shutil.move(old_path, new_path)
                     moved += 1
                     print(f"Moved: {filename}")
