@@ -1,4 +1,4 @@
-# Data Sorter - Clean the mess up!
+# Data Sorter
 
 
 Nobody's Data Sorter (NobodyDS)
